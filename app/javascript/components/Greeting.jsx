@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRandomGreeting } from '../redux/actions';
 
 const Greeting = () => {
-  const [greeting, setGreeting] = useState('');
-  const history = useHistory();
+  const dispatch = useDispatch();
+  const greeting = useSelector((state) => state.greeting);
 
   useEffect(() => {
-    fetch('/greetings/random')
-      .then(response => response.json())
-      .then(data => setGreeting(data.greeting))
-      .catch(error => console.error('Error fetching greeting:', error));
-  }, []);
+    dispatch(fetchRandomGreeting());
+  }, [dispatch]);
 
   return (
     <div>
-      <h1>{greeting}</h1>
-      <button onClick={() => history.push('/')}>...loading greeting</button>
+      <h1>Random Greeting:</h1>
+      <p>{greeting}</p>
     </div>
   );
 };
